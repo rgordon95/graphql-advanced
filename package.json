@@ -4,7 +4,7 @@
   "description": "basic graphql node.js project",
   "main": "index.ts",
   "scripts": {
-    "start": "nodemon src/index.ts --ext js,ts,graphql --exec babel-node",
+    "start": "nodemon src/index.ts --ext js,ts,graphql,json,.graphqlconfig,.babel-rc --exec babel-node",
     "test": "echo \"Error: no test specified\" && exit 1",
     "get-schema": "graphql get-schema -p prisma"
   },

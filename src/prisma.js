@@ -1,4 +1,3 @@
-import { waitForDebugger } from 'inspector';
 import { Prisma } from 'prisma-binding';
 import { locales } from './locales';
 
@@ -31,23 +30,30 @@ const createPostForUser = async (authorId, data) => {
     }
 
 const updatePostForUser = async (postId, data) => {
+    const postExists = await prisma.exists.Post({
+        id: postId
+    })
+
+    if (!postExists) {
+        throw new Error(locales.errors.postNotFound)
+    }
+
     const post = await prisma.mutation.updatePost({
         where: { id: postId }, data
-    }, '{ title author { id } }')
-    const user = await prisma.query.user({
-        where: {
-            id: post.author.id
-        }
-    }, '{ id name posts { id title published body } } ')
-    return user
+    }, '{ author { id name email  posts { id title published} } }')
+  
+    return post.author
 }
 
-//   updatePostForUser("ckflzze5302v60833zkxuk21u", {
-//       title: "renassssmed post",
-//       published: true
-//   }).then((user) => {
-//         console.log(JSON.stringify(user, undefined, 2))
-//     })
+  updatePostForUser("ckflwbbcp00jo08336j4jlup9", {
+      title: "update post",
+      published: false
+  }).then((post) => {
+        console.log(JSON.stringify(post, undefined, 2))
+    }).catch((error) => {
+        console.log(error)
+    });
+
 
     createPostForUser("ckflwn3no00rf0833su720yxb", {
         title: 'newest post',

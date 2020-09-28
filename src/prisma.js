@@ -37,12 +37,12 @@ const updatePostForUser = async (postId, data) => {
     return user
 }
 
-  updatePostForUser("ckflzze5302v60833zkxuk21u", {
-      title: "renassssmed post",
-      published: true
-  }).then((user) => {
-        console.log(JSON.stringify(user, undefined, 2))
-    })
+//   updatePostForUser("ckflzze5302v60833zkxuk21u", {
+//       title: "renassssmed post",
+//       published: true
+//   }).then((user) => {
+//         console.log(JSON.stringify(user, undefined, 2))
+//     })
 
     // createPostForUser("ckflwn3no00rf0833su720yxb", {
     //     title: 'newest post',
@@ -52,16 +52,3 @@ const updatePostForUser = async (postId, data) => {
     //     console.log(JSON.stringify(user, undefined, 2))
     // })
 
-
-// prisma.mutation.updatePost({
-//     data: {
-//         title: "changed title",
-//         body: "H",
-//         published: true,
-//     }, where: { id: "ckflzcbbn02fq0833rifd3zi0"}
-// }, '{ id title body published } ').then((data) => {
-//     return prisma.query.posts(null, ' { id title body published author { name } } ').then((data) => {
-//         console.log(JSON.stringify(data, undefined, 2))
-
-//     })
-// })

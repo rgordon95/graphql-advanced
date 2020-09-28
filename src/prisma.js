@@ -6,9 +6,9 @@ const prisma = new Prisma({
 });
 
 
-prisma.query.users(null, '{ id name email posts { id title} }').then((data) => {
-console.log(JSON.stringify(data, undefined, 2));
-});
+// prisma.query.users(null, '{ id name email posts { id title} }').then((data) => {
+// console.log(JSON.stringify(data, undefined, 2));
+// });
 
 // prisma.query.comments(null, '{ id body author { name } }').then((data) => {
 //     console.log(JSON.stringify(data, undefined, 2))
@@ -16,9 +16,9 @@ console.log(JSON.stringify(data, undefined, 2));
 
 prisma.mutation.createPost({
     data: {
-        title: "my new graphql post",
-        body: "here is my body text",
-        published: true,
+        title: "my old graphql post",
+        body: "h",
+        published: false,
         author: {
             connect: {
                 id: "ckflwn3no00rf0833su720yxb"
@@ -27,4 +27,7 @@ prisma.mutation.createPost({
     }
 }, '{ id title body published }').then((data) => {
     console.log(JSON.stringify(data, undefined, 2))
+    return prisma.query.users(null, '{ id name posts { id title } } ').then((data) => {
+        console.log(JSON.stringify(data, undefined, 2))
+    })
 });

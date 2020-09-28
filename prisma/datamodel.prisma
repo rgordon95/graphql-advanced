@@ -12,3 +12,10 @@ type Post {
   published: Boolean!
   author: User!
 }
+
+type Comment {
+    id: ID! @id
+    body: String!
+    author: User!
+    post: Post!
+}

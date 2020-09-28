@@ -1,16 +1,22 @@
+import { waitForDebugger } from 'inspector';
 import { Prisma } from 'prisma-binding';
+import { locales } from './locales';
 
 const prisma = new Prisma({
     typeDefs: 'src/__generated__/prisma.graphql',
     endpoint: 'http://localhost:4466',
 });
 
-prisma.exists.Comment({
-    id: "ckflx12kb01160833wd7pgc2g"
-}).then((res) =>
-console.log(res))
 
 const createPostForUser = async (authorId, data) => {
+    const userExists = await prisma.exists.User({
+        id: authorId
+    })
+
+    if (!userExists) {
+        throw new Error(locales.errors.userNotFound)
+    }
+
     const post = await prisma.mutation.createPost({
         data: {
             ...data,
@@ -20,13 +26,8 @@ const createPostForUser = async (authorId, data) => {
                }
            }
         }
-    }, '{ id }')
-    const user = await prisma.query.user({
-        where: {
-            id: authorId
-        }
-    }, '{ id name email posts { id title published body } } ')
-        return user
+    }, '{ id author { name posts { title published } } }')
+        return post.author
     }
 
 const updatePostForUser = async (postId, data) => {
@@ -48,11 +49,13 @@ const updatePostForUser = async (postId, data) => {
 //         console.log(JSON.stringify(user, undefined, 2))
 //     })
 
-    // createPostForUser("ckflwn3no00rf0833su720yxb", {
-    //     title: 'newest post',
-    //     body: "the war of art",
-    //     published: true
-    // }).then((user) => {
-    //     console.log(JSON.stringify(user, undefined, 2))
-    // })
+    createPostForUser("ckflwn3no00rf0833su720yxb", {
+        title: 'newest post',
+        body: "the warasdass of art",
+        published: true
+    }).then((user) => {
+        console.log(JSON.stringify(user, undefined, 2))
+    }).catch((error) => {
+        console.log(error)
+    });
 

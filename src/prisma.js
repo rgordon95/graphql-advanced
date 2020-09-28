@@ -25,6 +25,25 @@ const createPostForUser = async (authorId, data) => {
         return user
     }
 
+const updatePostForUser = async (postId, data) => {
+    const post = await prisma.mutation.updatePost({
+        where: { id: postId }, data
+    }, '{ title author { id } }')
+    const user = await prisma.query.user({
+        where: {
+            id: post.author.id
+        }
+    }, '{ id name posts { id title published body } } ')
+    return user
+}
+
+  updatePostForUser("ckflzze5302v60833zkxuk21u", {
+      title: "renassssmed post",
+      published: true
+  }).then((user) => {
+        console.log(JSON.stringify(user, undefined, 2))
+    })
+
     // createPostForUser("ckflwn3no00rf0833su720yxb", {
     //     title: 'newest post',
     //     body: "the war of art",

@@ -5,6 +5,10 @@ const prisma = new Prisma({
     endpoint: 'http://localhost:4466',
 });
 
+prisma.exists.Comment({
+    id: "ckflx12kb01160833wd7pgc2g"
+}).then((res) =>
+console.log(res))
 
 const createPostForUser = async (authorId, data) => {
     const post = await prisma.mutation.createPost({

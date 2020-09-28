@@ -12,7 +12,6 @@ import './prisma';
 import { locales } from './locales';
 
 console.log(locales.logs.initializing);
-console.log(locales.userMessaging.getGreeting('admin'));
 
 const pubsub = new PubSub();
 

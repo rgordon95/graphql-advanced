@@ -45,23 +45,23 @@ const updatePostForUser = async (postId, data) => {
     return post.author
 }
 
-  updatePostForUser("ckflwbbcp00jo08336j4jlup9", {
-      title: "update post",
-      published: false
-  }).then((post) => {
-        console.log(JSON.stringify(post, undefined, 2))
-    }).catch((error) => {
-        console.log(error)
-    });
+//   updatePostForUser("ckflwbbcp00jo08336j4jlup9", {
+//       title: "update post",
+//       published: false
+//   }).then((post) => {
+//         console.log(JSON.stringify(post, undefined, 2))
+//     }).catch((error) => {
+//         console.log(error)
+//     });
 
 
-    createPostForUser("ckflwn3no00rf0833su720yxb", {
-        title: 'newest post',
-        body: "the warasdass of art",
-        published: true
-    }).then((user) => {
-        console.log(JSON.stringify(user, undefined, 2))
-    }).catch((error) => {
-        console.log(error)
-    });
+//     createPostForUser("ckflwn3no00rf0833su720yxb", {
+//         title: 'newest post',
+//         body: "the warasdass of art",
+//         published: true
+//     }).then((user) => {
+//         console.log(JSON.stringify(user, undefined, 2))
+//     }).catch((error) => {
+//         console.log(error)
+//     });
 

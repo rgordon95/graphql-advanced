@@ -9,9 +9,4 @@ export const locales = {
         initialized: 'graphql initialized!',
         initializing: 'graphql initializing...'
     },
-    userMessaging: {
-        getGreeting: (name) => {
-            return `welcome to the app ${name}`
-        }
-    },
 };

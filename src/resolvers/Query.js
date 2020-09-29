@@ -18,7 +18,7 @@ const Query = {
             author: '1',
        }
     },
-    posts(parent, args, { db, prisma }, info) {
+    posts(parent, args, { prisma }, info) {
         const opArgs = {}
 
             if (args.query) {
@@ -34,7 +34,7 @@ const Query = {
 
         return prisma.query.posts(null, info);
 },
-users(parent, args, { db, }, info) {
+users(parent, args, { prisma }, info) {
 const opArgs = {}
 
 if (args.query) {
@@ -49,10 +49,9 @@ if (args.query) {
 
 return prisma.query.users(opArgs, info)
 },
-comments(parent, args, { db }, info) {
-   if (!args.query) {
-       return db.comments;
-}
+comments(parent, args, { prisma }, info) {
+    const opArgs = {}
+  return prisma.query.comments(opArgs, info)
 },
 };
 

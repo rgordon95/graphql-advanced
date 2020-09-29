@@ -50,8 +50,7 @@ if (args.query) {
 return prisma.query.users(opArgs, info)
 },
 comments(parent, args, { prisma }, info) {
-    const opArgs = {}
-  return prisma.query.comments(opArgs, info)
+  return prisma.query.comments(null, info)
 },
 };
 

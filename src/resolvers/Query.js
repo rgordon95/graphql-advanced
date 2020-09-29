@@ -19,17 +19,20 @@ const Query = {
        }
     },
     posts(parent, args, { db, prisma }, info) {
-        return prisma.query.posts(null, info);
+        const opArgs = {}
 
-        //        if (!args.query) {
-//            return db.posts;
-//        }
-       
-//        return db.posts.filter((post) => {
-//             const isTitleMatch = post.title.toLowerCase().includes(args.query.toLowerCase());
-//             const isBodyMatch = post.body.toLowerCase().includes(args.query.toLowerCase());
-//            return isTitleMatch || isBodyMatch;  
-//    })
+            if (args.query) {
+                opArgs.where = {
+                    OR: [{
+                        title_contains: args.query
+                    }, {
+                        body_contains: args.query
+                    }]
+                }
+            }
+
+
+        return prisma.query.posts(null, info);
 },
 users(parent, args, { db, }, info) {
 const opArgs = {}

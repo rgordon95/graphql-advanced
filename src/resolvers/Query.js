@@ -32,15 +32,19 @@ const Query = {
 //    })
 },
 users(parent, args, { db, }, info) {
-return prisma.query.users(null, info)
+const opArgs = {}
 
-    //    if (!args.query) {
-//        return db.users;
-//    } else {
-//        return db.users.filter((user) => {
-//            return user.name.toLowerCase().includes(args.query.toLowerCase())
-//        })
-//    }
+if (args.query) {
+    opArgs.where = {
+            OR: [{
+                name_contains: args.query
+            }, {
+                email_contains: args.query
+            }]
+        }
+    }
+
+return prisma.query.users(opArgs, info)
 },
 comments(parent, args, { db }, info) {
    if (!args.query) {

@@ -19,5 +19,5 @@ type Comment {
     id: ID! @id
     body: String!
     author: User! @relation(name: "CommentToUser", onDelete: SET_NULL)
-    post: Post! @relation(name: "CommentToPost", onDelete: SET_NULL)
+    post: Post! @relation(name: "CommentToPost, onDelete: SET_NULL)
 }

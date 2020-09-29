@@ -6,44 +6,45 @@ const prisma = new Prisma({
     endpoint: 'http://localhost:4466',
 });
 
+export { prisma as default }
 
-const createPostForUser = async (authorId, data) => {
-    const userExists = await prisma.exists.User({
-        id: authorId
-    })
+// const createPostForUser = async (authorId, data) => {
+//     const userExists = await prisma.exists.User({
+//         id: authorId
+//     })
 
-    if (!userExists) {
-        throw new Error(locales.errors.userNotFound)
-    }
+//     if (!userExists) {
+//         throw new Error(locales.errors.userNotFound)
+//     }
 
-    const post = await prisma.mutation.createPost({
-        data: {
-            ...data,
-            author: {
-                connect: {
-                   id: authorId
-               }
-           }
-        }
-    }, '{ id author { name posts { title published } } }')
-        return post.author
-    }
+//     const post = await prisma.mutation.createPost({
+//         data: {
+//             ...data,
+//             author: {
+//                 connect: {
+//                    id: authorId
+//                }
+//            }
+//         }
+//     }, '{ id author { name posts { title published } } }')
+//         return post.author
+//     }
 
-const updatePostForUser = async (postId, data) => {
-    const postExists = await prisma.exists.Post({
-        id: postId
-    })
+// const updatePostForUser = async (postId, data) => {
+//     const postExists = await prisma.exists.Post({
+//         id: postId
+//     })
 
-    if (!postExists) {
-        throw new Error(locales.errors.postNotFound)
-    }
+//     if (!postExists) {
+//         throw new Error(locales.errors.postNotFound)
+//     }
 
-    const post = await prisma.mutation.updatePost({
-        where: { id: postId }, data
-    }, '{ author { id name email  posts { id title published} } }')
+//     const post = await prisma.mutation.updatePost({
+//         where: { id: postId }, data
+//     }, '{ author { id name email  posts { id title published} } }')
   
-    return post.author
-}
+//     return post.author
+// }
 
 //   updatePostForUser("ckflwbbcp00jo08336j4jlup9", {
 //       title: "update post",

@@ -1,3 +1,5 @@
+import { Prisma } from "prisma-binding";
+
 const Query = {
     me() {
         return {
@@ -27,14 +29,16 @@ const Query = {
            return isTitleMatch || isBodyMatch;  
    })
 },
-users(parent, args, { db }, info) {
-   if (!args.query) {
-       return db.users;
-   } else {
-       return db.users.filter((user) => {
-           return user.name.toLowerCase().includes(args.query.toLowerCase())
-       })
-   }
+users(parent, args, { db, }, info) {
+return prisma.query.users(null, info)
+
+    //    if (!args.query) {
+//        return db.users;
+//    } else {
+//        return db.users.filter((user) => {
+//            return user.name.toLowerCase().includes(args.query.toLowerCase())
+//        })
+//    }
 },
 comments(parent, args, { db }, info) {
    if (!args.query) {

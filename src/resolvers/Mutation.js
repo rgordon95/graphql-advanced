@@ -10,24 +10,7 @@ async createUser(parent, args, { prisma }, info) {
         throw new Error(locales.errors.emailInUse)
     }
 
-    const user = await prisma.mutation.createUser({ data: args.data, info })
-
-    return user;
-
-    // const emailTaken = db.users.some((user) => user.email === args.data.email)
-   
-    // if (emailTaken) {
-    //     throw new Error(locales.errors.emailInUse)
-    // }
-
-    // const user = {
-    //     id: uuidv4(),
-    //     ...args.data,
-    // }
-
-    // db.users.push(user)
-
-    // return user;
+    return prisma.mutation.createUser({ data: args.data, info })
 },
 deleteUser(parent, args, { db }, info) {
     const userIndex = db.users.findIndex((user) => user.id === args.id)

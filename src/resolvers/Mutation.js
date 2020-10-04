@@ -23,33 +23,20 @@ async updateUser(parent, args, { prisma }, info) {
         },
         data: args.data
     }, info)
-
-
 },
-createPost(parent, args, { db, pubsub }, info) {
-    const userExists = db.users.some((user) => user.id === args.data.author)
-
-    if (!userExists) {
-        throw new Error(locales.errors.userNotFound)
-    }
-
-    const post = {
-        id: uuidv4(),
-       ...args.data,
-    };
-
-    db.posts.push(post);
-
-    if (args.data.published) {
-        pubsub.publish('post', {
-            post: {
-                mutation: Constants.MutationTypes.CREATED,
-                data: post
-            }
-        });
-    }
-    
-    return post;
+createPost(parent, args, { prisma }, info) {
+    return prisma.mutation.createPost({
+        data: {
+            title: args.data.title, 
+            body: args.data.body, 
+            published: args.data.published,
+            author: {
+                connect: {
+                    id: args.data.author, 
+                }
+            },
+       }
+    }, info);
 },
 deletePost(parents, args, { db, pubsub }, info) {
     const postIndex = db.posts.findIndex((post) => post.id === args.id);

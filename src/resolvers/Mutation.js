@@ -5,22 +5,15 @@ import { Constants } from '../constants';
 const Mutation = {
 async createUser(parent, args, { prisma }, info) {
    // optional checks for more clear error mesaging, can optionally use prismas built in
-   /*  const emailTaken  = await prisma.exists.User({ email: args.data.email })
+    const emailTaken  = await prisma.exists.User({ email: args.data.email })
 
      if (emailTaken) {
         throw new Error(locales.errors.emailInUse)
     }
-*/
+
     return prisma.mutation.createUser({ data: args.data }, info)
 },
 async deleteUser(parent, args, { prisma }, info) {
-    // optional checks for more clear error mesaging, can optionally use prismas built in
-    const userExists = await prisma.exists.User({ id: args.id })
-
-    if (!userExists) {
-        throw new Error(locales.errors.userNotFound)
-    }
-
     return prisma.mutation.deleteUser({ where: { id: args.id, }, info })
 },
 async updateUser(parent, args, { prisma }, info) {

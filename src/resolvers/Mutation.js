@@ -66,23 +66,12 @@ async createComment(parent, args, { prisma }, info) {
        },
    }, info)
 },
-deleteComment(parent, args, { db, pubsub }, info) {
-    const commentIndex = db.comments.findIndex((comment) => comment.id === args.id);
-
-    if (commentIndex === -1) {
-        throw new Error(locales.errors.commentNotFound);
-    }
-
-    const deletedComment = db.comments.splice(commentIndex, 1);
-
-
-    db.comments.push(comment);
-    pubsub.publish(`comment ${deletedComment[0].post}`, {
-     mutation: Constants.MutationTypes.DELETED,
-     data: comment   
-    });
-
-    return deletedComment[0];
+deleteComment(parent, args, { prisma }, info) {
+   return prisma.mutation.deleteComment({
+       where: {
+           id: args.id
+       }
+   }, info)
 },
 updateComment(parent, args, { prisma }, info ) {    
     return prisma.mutation.updateComment({

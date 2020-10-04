@@ -4,15 +4,17 @@ import { Constants } from '../constants';
 
 const Mutation = {
 async createUser(parent, args, { prisma }, info) {
-    const emailTaken  = await prisma.exists.User({ email: args.data.email })
+   // optional checks for more clear error mesaging, can optionally use prismas built in
+   /*  const emailTaken  = await prisma.exists.User({ email: args.data.email })
 
      if (emailTaken) {
         throw new Error(locales.errors.emailInUse)
     }
-
+*/
     return prisma.mutation.createUser({ data: args.data }, info)
 },
 async deleteUser(parent, args, { prisma }, info) {
+    // optional checks for more clear error mesaging, can optionally use prismas built in
     const userExists = await prisma.exists.User({ id: args.id })
 
     if (!userExists) {
@@ -21,33 +23,14 @@ async deleteUser(parent, args, { prisma }, info) {
 
     return prisma.mutation.deleteUser({ where: { id: args.id, }, info })
 },
-updateUser(parent, args, { db }, info) {
-    const { id, data } = args;
-   const user = db.users.find((user) => user.id === id);
+async updateUser(parent, args, { prisma }, info) {
+   return prisma.mutation.updateUser({
+        where: {
+            id: args.id,
+        },
+        data: args.data
+    }, info)
 
-   if (!user) {
-    throw new Error(locales.errors.userNotFound)
-}
-
-if (typeof data.email === 'string') {
-    const emailTaken = db.users.some((user) => user.email === data.email)
-
-    if (emailTaken) {
-        throw new Error(locales.errors.emailInUse);
-    }
-
-    user.email = data.email
-}
-
-if (typeof data.name === 'string') {
-    user.name = data.name
-}
-
-if (typeof data.age !== 'undefined') {
-    user.age = data.age
-}
-
-return user
 
 },
 createPost(parent, args, { db, pubsub }, info) {

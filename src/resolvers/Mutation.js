@@ -38,28 +38,8 @@ createPost(parent, args, { prisma }, info) {
        }
     }, info);
 },
-deletePost(parents, args, { db, pubsub }, info) {
-    const postIndex = db.posts.findIndex((post) => post.id === args.id);
-
-    if (postIndex === -1) {
-        throw new Error(locales.errors.postNotFound);
-    }
-
-    const [post] = db.posts.splice(postIndex, 1);
-
-    db.comments = db.comments.filter((comment) => comment.post !== args.id)
-
-    if (post.published) {
-        pubsub.publish('post', {
-            post: {
-                mutation: Constants.MutationTypes.DELETED,
-                data: post
-            }
-        });
-    }
-
-    return post;
-
+async deletePost(parents, args, { prisma }, info) {
+    return prisma.mutation.deletePost({ where: { id: args.id }, info});
 },
 updatePost(parents, { id, data }, { db, pubsub }, info ) {
     const post = db.posts.find((post) => post.id === id)

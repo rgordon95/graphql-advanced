@@ -1,6 +1,5 @@
 import uuidv4 from 'uuid/v4';
 import { locales } from '../locales';
-import { Constants } from '../constants';
 
 const Mutation = {
 async createUser(parent, args, { prisma }, info) {

@@ -1,16 +1,8 @@
-import { locales } from '../locales';
 
 const Subscription = {
   comment: {
-    subscribe(parent, { postId }, { db, pubsub }, info ) {
-        const post = db.posts.find((post) => post.id === postId && post.published)
-
-            if (!post) {
-                throw new Error(locales.errors.postNotFound)
-            }
-
-            return pubsub.asyncIterator(`comment ${postId}`)
-
+    subscribe(parent, { postId }, { prisma }, info ) {
+        return prisma.subscription.comment(null, info);
   }
 },
   post: {

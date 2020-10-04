@@ -41,51 +41,13 @@ createPost(parent, args, { prisma }, info) {
 async deletePost(parents, args, { prisma }, info) {
     return prisma.mutation.deletePost({ where: { id: args.id }, info});
 },
-updatePost(parents, { id, data }, { db, pubsub }, info ) {
-    const post = db.posts.find((post) => post.id === id)
-    const originalPost = { ...post }
-
-    if (!post) {
-        throw new Error(locales.errors.postNotFound);
-    }
-
-    if (typeof data.title === 'string') {
-        post.title = data.title
-    }
-    
-    if (typeof data.body === 'string') {
-        post.body = data.body
-    }
-
-    if (typeof data.published === 'boolean') {
-        post.published = data.published
-
-        if (originalPost.published && !post.published) {
-            pubsub.publish('post', {
-                post: {
-                    mutation: Constants.MutationTypes.DELETED,
-                    data: originalPost
-                }
-            })
-        } else if (!originalPost.published && post.published) {
-            pubsub.publish('post', {
-                post: {
-                    mutation: Constants.MutationTypes.CREATED,
-                    data: post
-                }
-            })
-        }
-    } else if (post.published) {
-        pubsub.publish('post', {
-            post: {
-                mutation: Constants.MutationTypes.UPDATED,
-                data: post
-            }
-        })
-    }
-
-
-    return post
+async updatePost(parents, { id, data }, { prisma }, info ) {
+    return prisma.mutation.updatePost({
+        where: {
+            id: id,
+        },
+        data: data
+    }, info)
 },
 createComment(parent, args, { db, pubsub }, info) {
     const userExists = db.users.some((user) => user.id === args.data.author);

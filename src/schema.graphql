@@ -32,7 +32,6 @@ enum MutationType {
 input CreateUserInput { 
     name: String!
     email: String!
-    age: Int!
 }
 
 input CreatePostInput {
@@ -51,7 +50,6 @@ input CreateCommentInput {
 input UpdateUserInput {
     name: String
     email: String
-    age: Int
 }
 
 input UpdatePostInput {

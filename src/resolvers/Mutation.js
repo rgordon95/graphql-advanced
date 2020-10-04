@@ -49,35 +49,22 @@ async updatePost(parents, { id, data }, { prisma }, info ) {
         data: data
     }, info)
 },
-createComment(parent, args, { db, pubsub }, info) {
-    const userExists = db.users.some((user) => user.id === args.data.author);
-    const postExists = db.posts.some((post) => {
-        return post.id === args.data.post && post.published;
-    });
-
-    if (!userExists) {
-        throw new Error(locales.errors.userNotFound);
-    }
-
-    if (!postExists) {
-        throw new Error(locales.errors.postNotFound);
-    }
-    
-    const comment = {
-        id: uuidv4(),
-        body: args.data.body,
-        author: args.data.author,
-        post: args.data.post,
-    }
-
-    db.comments.push(comment);
-    pubsub.publish(`comment ${args.data.post}`, {
-     mutation: Constants.MutationTypes.CREATED,
-     data: comment   
-    });
-
-    return comment;
-
+async createComment(parent, args, { prisma }, info) {
+   return prisma.mutation.createComment({
+       data: {
+           body: args.data.body,
+           author: {
+               connect: {
+                   id: args.data.author
+               }
+           },
+           post: {
+               connect: {
+                       id: args.data.post
+                   }
+           }
+       },
+   }, info)
 },
 deleteComment(parent, args, { db, pubsub }, info) {
     const commentIndex = db.comments.findIndex((comment) => comment.id === args.id);

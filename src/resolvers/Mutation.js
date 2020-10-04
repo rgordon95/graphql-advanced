@@ -84,26 +84,14 @@ deleteComment(parent, args, { db, pubsub }, info) {
 
     return deletedComment[0];
 },
-updateComment(parent, args, { db, pubsub }, info ) {
-    const { id, body } = args;
-    const comment = db.comments.find((comment) => comment.id === id)
-
-    if (!comment) {
-        throw new Error(locales.errors.commentNotFound)
-    }
-
-    if (typeof body === 'string') {
-        comment.body = body
-    }
-
-    db.comments.push(comment);
-    pubsub.publish(`comment ${comment.post}`, {
-     mutation: Constants.MutationTypes.UPDATED,
-     data: comment   
-    });
-
-    return comment
-},
+updateComment(parent, args, { prisma }, info ) {    
+    return prisma.mutation.updateComment({
+        where: {
+            id: args.id,
+        },
+        data:  args.data
+    }, info)
+  },
 };
 
 export { Mutation as default }

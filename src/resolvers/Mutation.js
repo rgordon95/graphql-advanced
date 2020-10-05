@@ -1,5 +1,8 @@
+import bcrypt from 'bcryptjs';
+
 import { locales } from '../locales';
 import { Constants } from '../constants';
+
 const Mutation = {
 async createUser(parent, args, { prisma }, info) {
    // optional checks for more clear error mesaging, can optionally use prismas built in
@@ -9,15 +12,23 @@ async createUser(parent, args, { prisma }, info) {
         throw new Error(locales.errors.emailInUse)
     }
 
-    if (args.data.password.length < Constants.PasswordRequirements.TOO_SHORT ) {
+    if (args.data.password.length < 8 ) { // replace with constant
         throw new Error(locales.errors.passwordTooShort)
     }
 
-    if (args.data.password.length > Constants.PasswordRequirements.TOO_LONG ) {
-        throw new Error(locales.errors.passwordTooLong)
-    }
+    // if (args.data.password.length > Constants.PasswordRequirements.TOO_LONG ) {
+    //     throw new Error(locales.errors.passwordTooLong)
+    // }
 
-    return prisma.mutation.createUser({ data: args.data }, info)
+    const password = await bcrypt.hash(args.data.password, 16)
+
+    return prisma.mutation.createUser({ 
+        data: {
+            ...args.data,
+            password,
+        }
+        
+    }, info)
 },
 async deleteUser(parent, args, { prisma }, info) {
     return prisma.mutation.deleteUser({ where: { id: args.id, }, info })

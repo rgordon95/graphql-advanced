@@ -37,8 +37,10 @@ async createUser(parent, args, { prisma }, info) {
         token: jwt.sign({ userId: user.id }, 'tempDevSecret')
     }
 },
-async deleteUser(parent, args, { prisma }, info) {
-    return prisma.mutation.deleteUser({ where: { id: args.id, }, info })
+async deleteUser(parent, args, { prisma, request }, info) {
+    const userId = getUserId(request);
+
+    return prisma.mutation.deleteUser({ where: { id: userId }, info })
 },
 async loginUser(parent, args, { prisma }, info ) {
 
@@ -63,10 +65,12 @@ async loginUser(parent, args, { prisma }, info ) {
         token: jwt.sign({ userId: user.id}, 'tempDevSecret')
     }
 },
-async updateUser(parent, args, { prisma }, info) {
+async updateUser(parent, args, { prisma, request}, info) {
+    const userId = getUserId(request);
+
    return prisma.mutation.updateUser({
         where: {
-            id: args.id,
+            id: userId,
         },
         data: args.data
     }, info)

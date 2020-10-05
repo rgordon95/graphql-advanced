@@ -1,6 +1,5 @@
-import uuidv4 from 'uuid/v4';
 import { locales } from '../locales';
-
+import { Constants } from '../constants';
 const Mutation = {
 async createUser(parent, args, { prisma }, info) {
    // optional checks for more clear error mesaging, can optionally use prismas built in
@@ -8,6 +7,14 @@ async createUser(parent, args, { prisma }, info) {
 
      if (emailTaken) {
         throw new Error(locales.errors.emailInUse)
+    }
+
+    if (args.data.password.length < Constants.PasswordRequirements.TOO_SHORT ) {
+        throw new Error(locales.errors.passwordTooShort)
+    }
+
+    if (args.data.password.length > Constants.PasswordRequirements.TOO_LONG ) {
+        throw new Error(locales.errors.passwordTooLong)
     }
 
     return prisma.mutation.createUser({ data: args.data }, info)

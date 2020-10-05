@@ -3,6 +3,7 @@ import { constants } from './constants';
 
 export const locales = {
     errors: {
+        authenticationRequired: 'you must login to perform this action',
         emailInUse: 'email in use. Try logging in instead',
         emailNotFound: 'email not found. Please create an account',
         commentNotFound: "sorry, this comment has been removed or never existed",

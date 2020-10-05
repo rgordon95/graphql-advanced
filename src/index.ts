@@ -25,11 +25,14 @@ const server = new GraphQLServer({
         Post,
         User
     },
-    context: {
-        db,
-        pubsub,
-        prisma,
-    },
+    context(request) {
+        return {
+            db,
+            pubsub,
+            prisma,
+            request,
+        }
+    } 
 });
 
 server.start(() => {

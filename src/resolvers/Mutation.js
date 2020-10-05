@@ -29,7 +29,6 @@ async createUser(parent, args, { prisma }, info) {
             ...args.data,
             password,
         }
-        
     })
 
     return {
@@ -43,8 +42,7 @@ async deleteUser(parent, args, { prisma, request }, info) {
     return prisma.mutation.deleteUser({ where: { id: userId }, info })
 },
 async loginUser(parent, args, { prisma }, info ) {
-
-    const user  = await prisma.query.user({ 
+    const user = await prisma.query.user({ 
         where: {
             email: args.data.email 
         }
@@ -65,7 +63,7 @@ async loginUser(parent, args, { prisma }, info ) {
         token: jwt.sign({ userId: user.id}, 'tempDevSecret')
     }
 },
-async updateUser(parent, args, { prisma, request}, info) {
+async updateUser(parent, args, { prisma, request }, info) {
     const userId = getUserId(request);
 
    return prisma.mutation.updateUser({
@@ -87,28 +85,84 @@ createPost(parent, args, { prisma, request }, info) {
                 connect: {
                     id: userId, 
                 }
-            },
+            }
        }
     }, info);
 },
-async deletePost(parents, args, { prisma }, info) {
-    return prisma.mutation.deletePost({ where: { id: args.id }, info});
+async deletePost(parents, args, { prisma, request }, info) {
+    const userId = getUserId(request);
+    const postExists = await prisma.exists.Post({
+        id: args.id,
+        author: {
+            id: userId,
+        }
+    })
+
+    if (!userId) {
+        throw new Error(locales.errors.authenticationRequired);
+    }
+
+    if (!postExists) {
+        throw new Error(locales.errors.postNotFound);
+    }
+
+    return prisma.mutation.deletePost({ 
+        where: { 
+            id: args.id 
+        }
+    }, info
+  )
 },
-async updatePost(parents, { id, data }, { prisma }, info ) {
+async updatePost(parents, { id, data }, { prisma, request }, info ) {
+    const userId = getUserId(request);
+
+    const postExists = await prisma.exists.Post({
+        id: args.id,
+        author: {
+            id: userId,
+        }
+    })
+
+    if (!userId) {
+        throw new Error(locales.errors.authenticationRequired);
+    }
+
+    if (!postExists) {
+        throw new Error(locales.errors.postNotFound);
+    }
+
     return prisma.mutation.updatePost({
         where: {
-            id: id,
+            id,
         },
-        data: data
+        data,
     }, info)
 },
-async createComment(parent, args, { prisma }, info) {
+ async createComment(parent, args, { prisma, request }, info) {
+    const userId = getUserId(request);
+
+    const postExists = await prisma.exists.Post({
+        id: args.data.id,
+        author: {
+            id: userId,
+        }
+    })
+
+    if (!userId) {
+        throw new Error(locales.errors.authenticationRequired);
+    }
+
+    if (!postExists) {
+        throw new Error(locales.errors.postNotFound);
+    }
+
+
    return prisma.mutation.createComment({
        data: {
            body: args.data.body,
            author: {
                connect: {
-                   id: args.data.author
+                   id: userId
                }
            },
            post: {
@@ -119,21 +173,55 @@ async createComment(parent, args, { prisma }, info) {
        },
    }, info)
 },
-deleteComment(parent, args, { prisma }, info) {
+async deleteComment(parent, args, { prisma, request }, info) {    
+    const userId = getUserId(request);
+
+    const commentExists = await prisma.exists.Comment({
+        id: args.id,
+        author: {
+            id: userId,
+        }
+    })
+
+    if (!userId) {
+        throw new Error(locales.errors.authenticationRequired);
+    }
+
+    if (!commentExists) {
+        throw new Error(locales.errors.commentNotFound);
+    }
+
    return prisma.mutation.deleteComment({
        where: {
            id: args.id
        }
    }, info)
 },
-updateComment(parent, args, { prisma }, info ) {    
+async updateComment(parent, args, { prisma, request }, info ) {    
+    const userId = getUserId(request);
+
+    const commentExists = await prisma.exists.Comment({
+        id: args.id,
+        author: {
+            id: userId,
+        }
+    })
+
+    if (!userId) {
+        throw new Error(locales.errors.authenticationRequired);
+    }
+
+    if (!commentExists) {
+        throw new Error(locales.errors.commentNotFound);
+    }
+
     return prisma.mutation.updateComment({
         where: {
             id: args.id,
         },
         data:  args.data
     }, info)
-  },
+  }
 };
 
 export { Mutation as default }

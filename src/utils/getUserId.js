@@ -2,18 +2,20 @@ import jwt from 'jsonwebtoken';
 
 import { locales } from '../locales';
 
-const getUserId = ( request ) => {
+const getUserId = ( request, requireAuth = true ) => {
     const header = request.request.headers.authorization
 
-    if (!header) {
-        throw new Error(locales.errors.authenticationRequired)
+    if (header) {
+         const token = header.replace('Bearer ', '')
+         const decoded =  jwt.verify(token, 'tempDevSecret');
+         return decoded.userId 
     }
 
-    const token = header.replace('Bearer ', '')
+ if (requireAuth) {
+    throw new Error(locales.errors.authenticationRequired)
+ }
 
-    const decoded =  jwt.verify(token, 'tempDevSecret');
-
-    return decoded.userId
+ return null;
 }
 
 export { getUserId  as default }

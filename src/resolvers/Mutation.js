@@ -64,8 +64,7 @@ async loginUser(parent, args, { prisma }, info ) {
     }
 },
 async updateUser(parent, args, { prisma, request }, info) {
-    const userId = getUserId(request);
-
+   const userId = getUserId(request);
    return prisma.mutation.updateUser({
         where: {
             id: userId,
@@ -75,7 +74,6 @@ async updateUser(parent, args, { prisma, request }, info) {
 },
 createPost(parent, args, { prisma, request }, info) {
     const userId = getUserId(request);
-
     return prisma.mutation.createPost({
         data: {
             title: args.data.title, 
@@ -155,7 +153,6 @@ async updatePost(parents, { id, data }, { prisma, request }, info ) {
     if (!postExists) {
         throw new Error(locales.errors.postNotFound);
     }
-
 
    return prisma.mutation.createComment({
        data: {

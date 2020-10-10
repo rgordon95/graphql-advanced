@@ -1,4 +1,5 @@
 import getUserId from '../utils/getUserId'
+import { locales } from '../locales';
 
 const User ={
   email: {
@@ -9,7 +10,7 @@ const User ={
       if (userId && userId === parent.id) {
         return parent.email
       } else {
-        return 'this users email is private';
+        return locales.errors.permissionDenied;
       }
       }
   },
@@ -24,10 +25,7 @@ const User ={
               id: parent.id
             }
         }
-    })
-
-    return posts;
-    
+    })    
     }
   }
   };

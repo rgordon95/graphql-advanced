@@ -7,6 +7,7 @@ export const locales = {
         emailInUse: 'email in use. Try logging in instead',
         emailNotFound: 'email not found. Please create an account',
         commentNotFound: "sorry, this comment has been removed or never existed",
+        permissionDenied: "sorry, you don't have permission to access this content",
         postNotFound: 'sorry, this post no longer exists.',
         passwordTooShort: `Sorry, your password must be longer `,
         userNotFound: 'user not found.',

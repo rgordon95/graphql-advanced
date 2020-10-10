@@ -66,7 +66,7 @@ async updateUser(parent, args, { prisma, request }, info) {
 
    return prisma.mutation.updateUser({
         where: {
-            id: userId,
+            id: userId
         },
         data: args.data
     }, info)

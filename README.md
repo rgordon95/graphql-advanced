@@ -21,14 +21,22 @@ prerequisites:
 5. Visit [graphql playground](http://localhost:4466/) to run queries
 6. Connect to frontend
 
+OR
+
+[production playground](https://stark-oasis-22535.herokuapp.com/)
+
+
+
 ### Run In development (local)
 
+npm run prisma-deploy-dev
 
 ### Run in development (remote)
 
 
 ### Configure for production
 
+npm run prisma-deploy-prod
 
 # Dependency Notes
 

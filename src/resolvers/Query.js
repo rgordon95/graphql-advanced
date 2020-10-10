@@ -25,6 +25,7 @@ const Query = {
         const opArgs = {
             after: args.after,
             first: args.first,
+            orderBy: args.orderBy,
             skip: args.skip,   
             where: {
                 author: {
@@ -71,6 +72,7 @@ const Query = {
         const opArgs = {
             after: args.after,
             first: args.first,
+            orderBy: args.orderBy,
             skip: args.skip,
             where: {
                 published: true
@@ -110,6 +112,7 @@ comments(parent, args, { prisma }, info) {
     const opArgs = {
     after: args.after,
     first: args.first,
+    orderBy: args.orderBy,
     skip: args.skip,
 }
 

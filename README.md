@@ -33,8 +33,15 @@ npm run prisma-deploy-dev
 
 ### Run in development (remote)
 
+### Push to production (after initial authentication)
 
-### Configure for production
+git status 
+
+git add .
+
+git commit -m "commit message here"
+
+heroku push main
 
 npm run prisma-deploy-prod
 

@@ -5,7 +5,7 @@ import Constants from '../Constants';
 
 const getUserToken = ( userId ) => {
 
-   return jwt.sign({ userId }, 'tempDevSecret', { expiresIn: Constants.Global.TOKEN_EXPIRATION });
+   return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: Constants.Global.TOKEN_EXPIRATION });
 }
 
 export { getUserToken  as default }

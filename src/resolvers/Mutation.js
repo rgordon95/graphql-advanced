@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 
+import getHashedPassword from '../utils/getHashedPassword';
 import getUserId from '../utils/getUserId';
 import getUserToken from '../utils/getUserToken';
 import Constants from '../Constants';
@@ -15,15 +16,7 @@ async createUser(parent, args, { prisma }, info) {
         throw new Error(locales.errors.emailInUse)
     }
 
-    if (args.data.password.length < Constants.PasswordRequirements.TOO_SHORT) {
-        throw new Error(locales.errors.passwordTooShort)
-    }
-
-    if (args.data.password.length > Constants.PasswordRequirements.TOO_LONG ) {
-        throw new Error(locales.errors.passwordTooLong)
-    }
-
-    const password = await bcrypt.hash(args.data.password, 16)
+    const password = await getHashedPassword(args.data.password)
 
     const user =  prisma.mutation.createUser({ 
         data: {
@@ -66,6 +59,11 @@ async loginUser(parent, args, { prisma }, info ) {
 },
 async updateUser(parent, args, { prisma, request }, info) {
    const userId = getUserId(request);
+
+   if (typeof args.data.password === 'string') {
+    args.data.password = await getHashedPassword(args.data.password)
+   }
+
    return prisma.mutation.updateUser({
         where: {
             id: userId,

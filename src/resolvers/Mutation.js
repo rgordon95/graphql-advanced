@@ -33,7 +33,7 @@ async createUser(parent, args, { prisma }, info) {
 
     return {
         user,
-        token: jwt.sign({ userId: user.id }, 'tempDevSecret', { expiresIn: '21 days',})
+        token: jwt.sign({ userId: user.id }, 'tempDevSecret', { expiresIn: Constants.Global.TOKEN_EXPIRATION })
     }
 },
 async deleteUser(parent, args, { prisma, request }, info) {
@@ -60,7 +60,7 @@ async loginUser(parent, args, { prisma }, info ) {
 
     return { 
         user,
-        token: jwt.sign({ userId: user.id}, 'tempDevSecret', { expiresIn: '21 days',})
+        token: jwt.sign({ userId: user.id}, 'tempDevSecret', { expiresIn: Constants.Global.TOKEN_EXPIRATION })
     }
 },
 async updateUser(parent, args, { prisma, request }, info) {

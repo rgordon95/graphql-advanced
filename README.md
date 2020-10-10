@@ -24,8 +24,10 @@ prerequisites:
 * graphql-yoga - for running the server
 * graphql-cli - for running common graphql commands from the command line
 * prisma - for managing database queries in accordance with schema (ORM+)
-* Docker - for deployment with heroku
+* Docker - for deployment with heroku (server and database)
 * Heroku - hosting the database
 * Nodemon  - for server refresh on file change during development
 * babel[plugins] - for TS/ES7+ etc.
+* bcrypt - for password hashing
+* jwt - for tokens
 * uuid - for random id generation

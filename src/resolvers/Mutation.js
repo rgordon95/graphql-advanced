@@ -116,6 +116,7 @@ async updatePost(parents, { id, data }, { prisma, request }, info ) {
 
     const postExists = await prisma.exists.Post({
         id: args.id,
+        published,
         author: {
             id: userId,
         }
@@ -127,6 +128,22 @@ async updatePost(parents, { id, data }, { prisma, request }, info ) {
 
     if (!postExists) {
         throw new Error(locales.errors.postNotFound);
+    }
+
+
+    const isPublished = await prisma.exists.Post({
+        id: args.id,
+        published
+    })
+
+    if (isPublished && args.data.published === false) {
+        await prisma.mutation.deleteManyComments({
+            where: {
+                post: {
+                    id: args.id
+                }
+            }
+        })
     }
 
     return prisma.mutation.updatePost({
@@ -141,7 +158,7 @@ async updatePost(parents, { id, data }, { prisma, request }, info ) {
 
     const postExists = await prisma.exists.Post({
         id: args.data.id,
-        published: true
+        published,
     })
 
     if (!userId) {

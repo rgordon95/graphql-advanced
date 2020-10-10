@@ -141,16 +141,14 @@ async updatePost(parents, { id, data }, { prisma, request }, info ) {
 
     const postExists = await prisma.exists.Post({
         id: args.data.id,
-        author: {
-            id: userId,
-        }
+        published: true
     })
 
     if (!userId) {
         throw new Error(locales.errors.authenticationRequired);
     }
 
-    if (!postExists) {
+    if (!postExists || !published) {
         throw new Error(locales.errors.postNotFound);
     }
 

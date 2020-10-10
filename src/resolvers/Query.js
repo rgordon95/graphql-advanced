@@ -23,6 +23,9 @@ const Query = {
         }
 
         const opArgs = {
+            after: args.after,
+            first: args.first,
+            skip: args.skip,   
             where: {
                 author: {
                     id: userId
@@ -103,7 +106,13 @@ if (args.query) {
 return prisma.query.users(opArgs, info)
 },
 comments(parent, args, { prisma }, info) {
-  return prisma.query.comments(null, info)
+    const opArgs = {
+    after: args.after,
+    first: args.first,
+    skip: args.skip,
+}
+
+  return prisma.query.comments(opArgs, info)
 },
 };
 

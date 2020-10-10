@@ -59,7 +59,7 @@ async loginUser(parent, args, { prisma }, info ) {
 },
 async updateUser(parent, args, { prisma, request }, info) {
    const userId = getUserId(request);
-
+   console.log('mutation log : ', userId)
    if (typeof args.data.password === 'string') {
     args.data.password = await getHashedPassword(args.data.password)
    }

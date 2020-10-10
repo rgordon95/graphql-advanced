@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 
 import getUserId from '../utils/getUserId';
 import getUserToken from '../utils/getUserToken';
+import Constants from '../Constants';
 import { locales } from '../locales';
 
 
@@ -14,13 +15,13 @@ async createUser(parent, args, { prisma }, info) {
         throw new Error(locales.errors.emailInUse)
     }
 
-    if (args.data.password.length < 8 ) { // replace with constant
+    if (args.data.password.length < Constants.PasswordRequirements.TOO_SHORT) {
         throw new Error(locales.errors.passwordTooShort)
     }
 
-    // if (args.data.password.length > Constants.PasswordRequirements.TOO_LONG ) {
-    //     throw new Error(locales.errors.passwordTooLong)
-    // }
+    if (args.data.password.length > Constants.PasswordRequirements.TOO_LONG ) {
+        throw new Error(locales.errors.passwordTooLong)
+    }
 
     const password = await bcrypt.hash(args.data.password, 16)
 

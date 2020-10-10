@@ -15,28 +15,6 @@ const Query = {
             }
         })
     },
-    async post(parent, args, { prisma, request }, info) {
-        const userId = getUserId(request, false);
-
-        const posts = await prisma.query.posts({
-             where: {
-                 id: args.id,
-                 OR: [{
-                        published: true
-                     }, {
-                     author: {
-                         id: userId
-                     }
-                     }]
-             }
-         }, info)
-
-         if (posts.length === 0) {
-             throw new Error(locales.errors.postNotFound);
-         }
-
-         return posts[0];
-    },
     myPosts(parent, args, { prisma, request }, info) {
         const userId = getUserId(request);
 
@@ -64,8 +42,31 @@ const Query = {
 
         return prisma.query.posts(opArgs, info);
     },
+    async post(parent, args, { prisma, request }, info) {
+        const userId = getUserId(request, false);
+
+        const posts = await prisma.query.posts({
+             where: {
+                 id: args.id,
+                 OR: [{
+                        published: true
+                     }, {
+                     author: {
+                         id: userId
+                     }
+                     }]
+             }
+         }, info)
+
+         if (posts.length === 0) {
+             throw new Error(locales.errors.postNotFound);
+         }
+
+         return posts[0];
+    },
     posts(parent, args, { prisma }, info) {
         const opArgs = {
+            after: args.after,
             first: args.first,
             skip: args.skip,
             where: {
@@ -83,8 +84,10 @@ const Query = {
 
         return prisma.query.posts(opArgs, info);
     },
+
     users(parent, args, { prisma }, info) {
 const opArgs = {
+    after: args.after,
     first: args.first,
     skip: args.skip,
 }

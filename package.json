@@ -6,7 +6,9 @@
   "scripts": {
     "start": "nodemon src/index.js --ext js,ts,graphql,json,.graphqlconfig,.babel-rc --exec babel-node",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "get-schema": "graphql get-schema -p prisma"
+    "get-schema": "graphql get-schema -p prisma",
+    "prisma-deploy-dev": "cd prisma && prisma deploy -e ../config/dev.env && cd ..",
+    "prisma-deploy-prod": "cd prisma && prisma deploy -e ../config/prod.env && cd .."
   },
   "author": "Richard Gordon / Udemy Course by Andrew",
   "license": "ISC",

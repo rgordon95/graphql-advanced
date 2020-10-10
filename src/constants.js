@@ -1,6 +1,6 @@
 const constants = {
     Global: {
-        TOKEN_EXPIRATION: '21 days'
+        TOKEN_EXPIRATION: '21 days',
     },
     MutationTypes: {
         CREATED: 'CREATED',

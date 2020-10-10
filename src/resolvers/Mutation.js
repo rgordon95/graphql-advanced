@@ -57,7 +57,7 @@ async loginUser(parent, args, { prisma }, info ) {
         token: getUserToken(user.id)
     }
 },
-async updateUser(parent, args, { prisma, request }, info) {
+async updateUser(parent, { where: { id } }, { prisma, request }, info) { // TODO: FIX IN PROD
    const userId = getUserId(request);
    console.log('mutation log : ', userId)
    if (typeof args.data.password === 'string') {

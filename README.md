@@ -2,6 +2,8 @@
 
 This repo was made to explore graphQL with node and apollo following along with [this udemy course](https://www.udemy.com/course/graphql-bootcamp/)
 
+Check out the production deployment: [production playground](https://stark-oasis-22535.herokuapp.com/)
+
 ## Getting Started
 
 prerequisites: 

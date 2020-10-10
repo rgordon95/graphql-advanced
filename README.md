@@ -56,5 +56,6 @@ npm run prisma-deploy-prod
 * babel[plugins] - for TS/ES7+ etc.
 * bcrypt - for password hashing
 * env cmd - for environment path mapping
+* jest - mock testing framework
 * jwt - for tokens
 * uuid - for random id generation

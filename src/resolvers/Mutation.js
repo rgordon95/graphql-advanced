@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 
 import getUserId from '../utils/getUserId';
+import getUserToken from '../utils/getUserToken';
 import { locales } from '../locales';
-import { constants } from '../constants';
+
 
 const Mutation = {
 async createUser(parent, args, { prisma }, info) {
@@ -18,7 +18,7 @@ async createUser(parent, args, { prisma }, info) {
         throw new Error(locales.errors.passwordTooShort)
     }
 
-    // if (args.data.password.length > constants.PasswordRequirements.TOO_LONG ) {
+    // if (args.data.password.length > Constants.PasswordRequirements.TOO_LONG ) {
     //     throw new Error(locales.errors.passwordTooLong)
     // }
 
@@ -33,7 +33,7 @@ async createUser(parent, args, { prisma }, info) {
 
     return {
         user,
-        token: jwt.sign({ userId: user.id }, 'tempDevSecret', { expiresIn: '21 days' })
+        token: getUserToken(user.id)
     }
 },
 async deleteUser(parent, args, { prisma, request }, info) {
@@ -60,7 +60,7 @@ async loginUser(parent, args, { prisma }, info ) {
 
     return { 
         user,
-        token: jwt.sign({ userId: user.id}, 'tempDevSecret', { expiresIn: '21 days' })
+        token: getUserToken(user.id)
     }
 },
 async updateUser(parent, args, { prisma, request }, info) {

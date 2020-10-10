@@ -1,4 +1,4 @@
-const constants = {
+const Constants = {
     Global: {
         TOKEN_EXPIRATION: '21 days',
     },
@@ -14,4 +14,4 @@ const constants = {
     }
 }
 
-export { constants as default}
+export { Constants as default}

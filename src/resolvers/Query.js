@@ -66,9 +66,11 @@ const Query = {
     },
     posts(parent, args, { prisma }, info) {
         const opArgs = {
+            first: args.first,
+            skip: args.skip,
             where: {
                 published: true
-            }
+            },
         }
 
             if (args.query) {
@@ -77,13 +79,11 @@ const Query = {
                 }, {
                     body_contains: args.query
                 }]
-
             }
 
-
         return prisma.query.posts(opArgs, info);
-},
-users(parent, args, { prisma }, info) {
+    },
+    users(parent, args, { prisma }, info) {
 const opArgs = {
     first: args.first,
     skip: args.skip,

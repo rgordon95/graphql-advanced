@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 
-import { locales } from '../locales';
 import Constants from '../Constants';
 
 const getUserToken = ( userId ) => {

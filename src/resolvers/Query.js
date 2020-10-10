@@ -2,12 +2,8 @@ import getUserId from '../utils/getUserId';
 import { locales } from '../locales';
 
 const Query = {
-    me(parent, args, { prisma, request }, info ) {
+    me(parent, args, { prisma, request }, info) {
         const userId = getUserId(request);
-
-        if (!userId) {
-            throw new Error(locales.errors.authenticationRequired);
-        }
 
         return prisma.query.user({
             where: {

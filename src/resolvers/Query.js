@@ -92,6 +92,7 @@ const Query = {
 const opArgs = {
     after: args.after,
     first: args.first,
+    orderBy: args.orderBy,
     skip: args.skip,
 }
 
